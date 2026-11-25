@@ -2,5 +2,24 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 100%;
+  width: 80%;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.loginimage {
+  flex: 3;
+  background-color: rgb(11, 11, 121);
+  background-size: cover;
+  background-position: center;
+}
+
+.loginform {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  padding-top: 5rem;
 }
