@@ -1,22 +1,19 @@
 import { LoginPage } from './components/LoginPage';
-import './App.css'
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
+import { Route, Routes, Navigate } from 'react-router';
+import { MainMenuPage } from './components/MainMenuPage';
+import './App.css'
 
 function App() {
 
   const { user, loading } = useContext(AuthContext);
 
   return (
-    <>
-      {loading ? (
-        <p>Loading...</p>
-      ) : user ? (
-        <p>Welcome, {user.email}!</p>
-      ) : (
-        <LoginPage />
-      )}
-    </>
+    <Routes>
+      <Route path="/login" element={loading ? <p>Loading...</p> : user ? <Navigate to="/" /> : <LoginPage />} />
+      <Route path="/" element={loading ? <p>Loading...</p> : user ? <MainMenuPage /> : <Navigate to="/login" />} />
+    </Routes>
   )
 }
 
