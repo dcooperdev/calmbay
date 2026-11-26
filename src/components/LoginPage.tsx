@@ -1,8 +1,8 @@
 import { useState } from "react";
-import styles from "./LoginPage.module.css";
 import { auth } from "../services/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
+import styles from "./LoginPage.module.css";
 
 export const LoginPage = () => {
 
