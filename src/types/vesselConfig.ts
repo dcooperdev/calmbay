@@ -5,4 +5,5 @@ export interface VesselConfig {
     readonly turnMaxSpeed: number;
     readonly turnAcceleration: number;
     readonly turnDrag: number;
+    readonly minTurnSpeed: number;
 }

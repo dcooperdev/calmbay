@@ -1,7 +1,8 @@
-import { Application, Container, Graphics } from "pixi.js";
+import { Application, Container } from "pixi.js";
 import { useEffect, useRef } from "react";
-import { pressedKeys } from "../game/input";
 import styles from "./PlayPage.module.css";
+import { Boat } from "../game/boat";
+import { VESSEL_CONFIG } from "../constants/constants";
 
 export const PlayPage = () => {
     const canvasContainerRef = useRef<HTMLDivElement>(null);
@@ -17,29 +18,14 @@ export const PlayPage = () => {
             if (!cancelled) {
                 canvasContainerRef.current?.appendChild(app.canvas);
                 const container = new Container();
-                const boat = new Graphics()
-                    .rect(0, 0, 50, 100)
-                    .fill(0xff0000);
-
-                boat.x = app.screen.width / 2;
-                boat.y = app.screen.height / 2;
-                boat.pivot.set(boat.width / 2, boat.height / 2);
+                const boat = new Boat({ x: app.screen.width / 2, y: app.screen.height / 2 }, { ...VESSEL_CONFIG, turnAcceleration: 0.001,turnDrag: 0.001 });
                 
                 app.stage.addChild(container);
-                container.addChild(boat);
+                container.addChild(boat.sprite);
 
-                app.ticker.add(() => {
-                    if (pressedKeys.has("KeyW")) {
-                        boat.x += Math.sin(boat.rotation) * 2;
-                        boat.y -= Math.cos(boat.rotation) * 2;
-                    }
-                    if (pressedKeys.has("KeyA")) {
-                        boat.rotation -= 0.01;
-                    }
-                    if (pressedKeys.has("KeyD")) {
-                        boat.rotation += 0.01;
-                    }
-                })
+                app.ticker.add((ticker) => {
+                    boat.update(ticker.deltaTime);
+                });
             } else {
                 app.destroy();
             }

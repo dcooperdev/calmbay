@@ -2,6 +2,7 @@ import { Graphics } from "pixi.js";
 import { getInput } from "./input";
 import type { Position } from "../types/position";
 import type { VesselConfig } from "../types/vesselConfig";
+import { VESSEL_CONFIG } from "../constants/constants";
 
 export class Boat {
     sprite: Graphics = new Graphics();
@@ -14,15 +15,9 @@ export class Boat {
     readonly turnMaxSpeed: number;
     readonly turnAcceleration: number;
     readonly turnDrag: number;
+    readonly minTurnSpeed: number;
 
-    constructor(position: Position, vesselConfig: VesselConfig = {
-        acceleration: 0.05,
-        drag: 0.02,
-        maxSpeed: 3,
-        turnMaxSpeed: 0.03,
-        turnAcceleration: 0.005,
-        turnDrag: 0.005
-    }) {
+    constructor(position: Position, vesselConfig: VesselConfig = VESSEL_CONFIG) {
         this.sprite
             .rect(0, 0, 50, 100)
             .fill(0xff0000);
@@ -38,6 +33,7 @@ export class Boat {
         this.turnMaxSpeed = vesselConfig.turnMaxSpeed;
         this.turnAcceleration = vesselConfig.turnAcceleration;
         this.turnDrag = vesselConfig.turnDrag;
+        this.minTurnSpeed = vesselConfig.minTurnSpeed;
     }
 
     update(updateDelta: number): void {
@@ -72,6 +68,10 @@ export class Boat {
             } else {
                 this.turnSpeed -= Math.sign(this.turnSpeed) * this.turnDrag * updateDelta;
             }
+        }
+
+        if (input.steering !== 0 && this.speed >= 0 && this.speed < this.minTurnSpeed) {
+            this.speed = this.minTurnSpeed;
         }
 
         this.sprite.x += Math.sin(this.sprite.rotation) * this.speed * updateDelta;
