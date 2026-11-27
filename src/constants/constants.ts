@@ -1,7 +1,7 @@
 import type { VesselConfig } from "../types/vesselConfig";
 
 // inputs
-export const DEAD_ZONE = 0.2;
+export const DEAD_ZONE: number = 0.2;
 
 // Vessels
 export const VESSEL_CONFIG: VesselConfig = {
@@ -13,3 +13,6 @@ export const VESSEL_CONFIG: VesselConfig = {
     turnDrag: 0.005,
     minTurnSpeed: 0.5
 }
+
+// world
+export const DEFAUL_BACKGROUND_COLOR: string = '#1099bb';
