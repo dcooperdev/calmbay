@@ -38,9 +38,9 @@ export const LoginPage = () => {
                                     setError("An unexpected error occurred. Please try again.");
                                     break;
                             }
-
+                        } else {
+                            setError("Invalid email or password");
                         }
-                        setError("Invalid email or password");
                     }
 
                 }} className={styles.form}>
