@@ -1,19 +1,7 @@
 import { Graphics } from "pixi.js";
-import { pressedKeys } from "./input";
-
-interface Position {
-    x: number;
-    y: number;
-}
-
-interface VesselConfig {
-    readonly acceleration: number;
-    readonly drag: number;
-    readonly maxSpeed: number;
-    readonly turnMaxSpeed: number;
-    readonly turnAcceleration: number;
-    readonly turnDrag: number;
-}
+import { getInput } from "./input";
+import type { Position } from "../types/position";
+import type { VesselConfig } from "../types/vesselConfig";
 
 export class Boat {
     sprite: Graphics = new Graphics();
@@ -53,23 +41,24 @@ export class Boat {
     }
 
     update(updateDelta: number): void {
-        if (pressedKeys.has("KeyW")) {
+        const input = getInput();
+        if (input.throttle > 0) {
             this.speed = Math.min(this.speed + this.acceleration * updateDelta, this.maxSpeed);
         }
 
-        if (pressedKeys.has("KeyS")) {
+        if (input.throttle < 0) {
             this.speed = Math.max(this.speed - this.acceleration * updateDelta, -this.maxSpeed / 2);
         }
 
-        if (pressedKeys.has("KeyA")) {
+        if (input.steering < 0) {
             this.turnSpeed = Math.max(this.turnSpeed - this.turnAcceleration * updateDelta, -this.turnMaxSpeed);
         }
 
-        if (pressedKeys.has("KeyD")) {
+        if (input.steering > 0) {
             this.turnSpeed = Math.min(this.turnSpeed + this.turnAcceleration * updateDelta, this.turnMaxSpeed);
         }
 
-        if (!pressedKeys.has("KeyW") && !pressedKeys.has("KeyS")) {
+        if (input.throttle === 0) {
             if (Math.abs(this.speed) <= this.drag * updateDelta) {
                 this.speed = 0;
             } else {
@@ -77,7 +66,7 @@ export class Boat {
             }
         }
 
-        if (!pressedKeys.has("KeyA") && !pressedKeys.has("KeyD")) {
+        if (input.steering === 0) {
             if (Math.abs(this.turnSpeed) <= this.turnDrag * updateDelta) {
                 this.turnSpeed = 0;
             } else {
