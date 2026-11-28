@@ -16,3 +16,4 @@ export const VESSEL_CONFIG: VesselConfig = {
 
 // world
 export const DEFAUL_BACKGROUND_COLOR: string = '#1099bb';
+export const CAMERA_FOLLOW_SPEED: number = 0.01;

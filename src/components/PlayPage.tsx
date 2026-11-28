@@ -19,7 +19,7 @@ export const PlayPage = () => {
             if (!cancelled) {
                 canvasContainerRef.current?.appendChild(app.canvas);
                 const boat = new Boat({ x: app.screen.width / 2, y: app.screen.height / 2 }, { ...VESSEL_CONFIG, turnAcceleration: 0.001, turnDrag: 0.001 });
-                const world = new World(boat);
+                const world = new World(boat, app.screen);
                 
                 app.stage.addChild(world.container);
 
